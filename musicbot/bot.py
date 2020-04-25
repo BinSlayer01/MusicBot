@@ -1299,6 +1299,22 @@ class MusicBot(discord.Client):
                 expire_in=30
             )
         return True
+		
+    async def cmd_delete(self, player, channel, message):
+        if player.current_entry:
+            song_url = player.current_entry.url
+            if song_url in self.autoplaylist:
+                self.autoplaylist.remove(song_url)
+                write_file(self.config.auto_playlist_file, self.autoplaylist) 
+                await self.safe_send_message(channel, "Current song deleted from autoplaylist!")
+            else:
+                await self.safe_send_message(channel, "Delete failed: SONG NOT FOUND IN AUTOPLAYLIST!")
+     
+        else:
+            return Response(
+                'There are no songs queued! Queue something with {}play.'.format(self.config.command_prefix),
+                delete_after=30
+            )
 
     async def cmd_play(self, message, player, channel, author, permissions, leftover_args, song_url):
         """
@@ -1576,6 +1592,11 @@ class MusicBot(discord.Client):
                     time_until = ''
 
                 reply_text %= (btext, position, ftimedelta(time_until))
+            if self.autoplaylist and author.id != "279316701563060226":  #Lenkandreki ID
+                if not(song_url in self.autoplaylist):
+                    self.autoplaylist.append(song_url)
+                    print("URL " + song_url + " added to the auto-playlist!")
+                    write_file(self.config.auto_playlist_file, self.autoplaylist)
 
         return Response(reply_text, delete_after=30)
 
