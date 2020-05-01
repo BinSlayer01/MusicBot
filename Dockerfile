@@ -1,37 +1,24 @@
-FROM alpine:edge
+FROM ubuntu:18.04
 
 # Add project source
 WORKDIR /usr/src/musicbot
-COPY . ./
 
-# Install dependencies
-RUN apk update \
-&& apk add --no-cache \
-  ca-certificates \
-  ffmpeg \
-  opus \
-  python3 \
-  libsodium-dev \
-\
-# Install build dependencies
-&& apk add --no-cache --virtual .build-deps \
-  gcc \
-  git \
-  libffi-dev \
-  make \
-  musl-dev \
-  python3-dev \
-\
-# Install pip dependencies
-&& pip3 install --no-cache-dir -r requirements.txt \
-&& pip3 install --upgrade --force-reinstall --version websockets==4.0.1 \
-\
-# Clean up build dependencies
-&& apk del .build-deps
+RUN apt-get update && apt-get install build-essential unzip -y
+RUN apt-get update && apt-get install software-properties-common -y
 
-# Create volume for mapping the config
-VOLUME /usr/src/musicbot/config
+RUN apt-get update && apt-get --assume-yes install git ffmpeg libopus-dev libffi-dev libsodium-dev python3-pip 
+RUN apt-get upgrade -y
 
-ENV APP_ENV=docker
+RUN git clone https://github.com/BinSlayer01/MusicBot.git -b master
+RUN cd ~/MusicBot
 
-ENTRYPOINT ["python3", "dockerentry.py"]
+WORKDIR /usr/src/musicbot/MusicBot
+COPY config/options.ini ./config/options.ini
+
+RUN pwd
+RUN ls -lrt
+# Install Python dependencies
+RUN python3 -m pip install -U pip
+RUN python3 -m pip install -U -r requirements.txt
+
+CMD python3 run.py

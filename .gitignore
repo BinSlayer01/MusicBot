@@ -9,7 +9,3 @@ dectalk/
 discord.log
 logs/
 data/
-config/aliases.json
-config/autoplaylist_removed.txt
-config/whitelist.txt
-config/blacklist.txt
