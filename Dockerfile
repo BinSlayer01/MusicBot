@@ -10,13 +10,11 @@ RUN apt-get update && apt-get --assume-yes install git ffmpeg libopus-dev libffi
 RUN apt-get upgrade -y
 
 RUN git clone https://github.com/BinSlayer01/MusicBot.git -b master
-RUN cd ~/MusicBot
+RUN cd MusicBot
 
 WORKDIR /usr/src/musicbot/MusicBot
 COPY config/options.ini ./config/options.ini
 
-RUN pwd
-RUN ls -lrt
 # Install Python dependencies
 RUN python3 -m pip install -U pip
 RUN python3 -m pip install -U -r requirements.txt
