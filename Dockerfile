@@ -13,10 +13,13 @@ RUN git clone https://github.com/BinSlayer01/MusicBot.git -b master
 RUN cd MusicBot
 
 WORKDIR /usr/src/musicbot/MusicBot
-COPY config/options.ini ./config/options.ini
 
 # Install Python dependencies
 RUN python3 -m pip install -U pip
 RUN python3 -m pip install -U -r requirements.txt
+
+RUN python3 -m pip install -U discord.py
+
+COPY config/options.ini ./config/options.ini
 
 CMD python3 run.py
