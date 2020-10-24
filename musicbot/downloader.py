@@ -26,6 +26,8 @@ ytdl_format_options = {
 # Fuck your useless bugreports message that gets two link embeds and confuses users
 youtube_dl.utils.bug_reports_message = lambda: ''
 
+youtube_dl.utils.std_headers['User-Agent'] = "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)"
+
 '''
     Alright, here's the problem.  To catch youtube-dl errors for their useful information, I have to
     catch the exceptions with `ignoreerrors` off.  To not break when ytdl hits a dumb video
