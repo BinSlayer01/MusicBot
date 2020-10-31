@@ -2,7 +2,7 @@ import os
 import asyncio
 import logging
 import functools
-import youtube_dl
+import youtube_dlc
 
 from concurrent.futures import ThreadPoolExecutor
 
@@ -24,9 +24,7 @@ ytdl_format_options = {
 }
 
 # Fuck your useless bugreports message that gets two link embeds and confuses users
-youtube_dl.utils.bug_reports_message = lambda: ''
-
-youtube_dl.utils.std_headers['User-Agent'] = "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)"
+youtube_dlc.utils.bug_reports_message = lambda: ''
 
 '''
     Alright, here's the problem.  To catch youtube-dl errors for their useful information, I have to
@@ -39,8 +37,8 @@ youtube_dl.utils.std_headers['User-Agent'] = "facebookexternalhit/1.1 (+http://w
 class Downloader:
     def __init__(self, download_folder=None):
         self.thread_pool = ThreadPoolExecutor(max_workers=2)
-        self.unsafe_ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
-        self.safe_ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
+        self.unsafe_ytdl = youtube_dlc.YoutubeDL(ytdl_format_options)
+        self.safe_ytdl = youtube_dlc.YoutubeDL(ytdl_format_options)
         self.safe_ytdl.params['ignoreerrors'] = True
         self.download_folder = download_folder
 
