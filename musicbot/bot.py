@@ -1590,11 +1590,17 @@ class MusicBot(discord.Client):
                     time_until = ''
 
                 reply_text %= (btext, position, ftimedelta(time_until))
+            #hacky way of making sure only the URL formatted like https://www.youtube.com/watch?v=XXXXX will be stored in the playlist. Otherwise don't store anything
             if self.autoplaylist and author.id != "279316701563060226":  #Lenkandreki ID
-                if not(song_url in self.autoplaylist):
-                    self.autoplaylist.append(song_url)
-                    print("URL " + song_url + " added to the auto-playlist!")
-                    write_file(self.config.auto_playlist_file, self.autoplaylist)
+                if (song_url.startswith('https://www.youtube.com/watch')):
+                    song_url = re.search('v=(.*)', song_url)
+                    song_url = song_url.group(1).split('&')
+                    song_url = song_url[0])
+                    if not(song_url in self.autoplaylist):
+                        self.autoplaylist.append(song_url)
+                        print("URL " + song_url + " added to the auto-playlist!")
+                        await self.safe_send_message(channel, "New song has been added to the auto-playlist!", expire_in=30)
+                        write_file(self.config.auto_playlist_file, self.autoplaylist)
 
         return Response(reply_text, delete_after=30)
 
