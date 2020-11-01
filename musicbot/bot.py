@@ -1595,7 +1595,7 @@ class MusicBot(discord.Client):
                 if (song_url.startswith('https://www.youtube.com/watch')):
                     song_url = re.search('v=(.*)', song_url)
                     song_url = song_url.group(1).split('&')
-                    song_url = song_url[0]
+                    song_url = 'https://www.youtube.com/watch?v=' + song_url[0]
                     if not(song_url in self.autoplaylist):
                         self.autoplaylist.append(song_url)
                         print("URL " + song_url + " added to the auto-playlist!")
